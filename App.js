@@ -1,13 +1,34 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { Input } from './components/Input'
-import { Button } from './components/Button'
+import { 
+  Container, 
+  Header, 
+  Content, 
+  Form, 
+  Item, 
+  Input,
+  Left, 
+  Body, 
+  Right,
+  Title, 
+  Label, 
+  Spinner, 
+  Button,
+  Text, 
+  Grid,
+  Col
+} from 'native-base';
 
 export default class App extends React.Component {
   state = {
     email: '',
     password: '',
     authenticating: false,
+  }
+
+  styles = {
+    login_container: {
+      padding: 10
+    },
   }
 
   onPressSignIn () {
@@ -19,55 +40,62 @@ export default class App extends React.Component {
   renderCurrentState() {
     if(this.state.authenticating) {
       return (
-        <View style={styles.form}>
-          <ActivityIndicator size='large' />
-        </View>
+        <Content>
+          <Spinner />
+        </Content>
       )
     }
 
     return (
-      <View style={styles.form}>
-        <Text> Flex Banzai! </Text>
-        <Input
-          placeholder='Enter your email'
-          label='Email'
-          onChangeText={email => this.setState({ email })}
-          value={this.state.email}
-        />
-        <Input
-          placeholder='Enter your password ...'
-          label='Password'
-          secureTextEntry
-          onChangeText={password => this.setState({ password })}
-          value={this.state.password}
-        />
-        <Button 
-          onPress={() => this.onPressSignIn()} 
-        > 
-          Log In 
-        </Button>
-      </View>
+      <Content contentContainerStyle={ this.styles.login_container }>
+        <Grid style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Col>
+            <Form contentContainerStyle={ this.styles.form_style }>
+              <Item fixedLabel>
+                <Label>Email</Label>
+                <Input
+                  placeholder='Enter your email'
+                  label='Email'
+                  onChangeText={email => this.setState({ email })}
+                  value={this.state.email}
+                />
+              </Item>
+              <Item fixedLabel last>
+                <Label>Password</Label>
+                <Input
+                  placeholder='Enter your password ...'
+                  label='Password'
+                  secureTextEntry
+                  onChangeText={password => this.setState({ password })}
+                  value={this.state.password} 
+                />
+              </Item>
+              <Button
+                full
+                onPress={() => this.onPressSignIn()} 
+              > 
+                <Text> Log In </Text>
+              </Button>
+            </Form>
+          </Col>
+        </Grid>
+      </Content>
     )
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <Container>
+        <Header>
+          <Left />
+          <Body>
+            <Title>Flex BanZai!</Title>
+          </Body>
+          <Right /> 
+        </Header>
         {this.renderCurrentState()}
-      </View>
+      </Container>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row'
-  },
-  form: {
-    flex: 1,
-    margin: 10
-  }
-});
